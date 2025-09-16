@@ -33,8 +33,8 @@ app.get('/events', async (req, res) => {
               event.title.toLowerCase().includes('балет') ? 'Балет' :
               event.title.toLowerCase().includes('драма') || event.title.toLowerCase().includes('пьеса') ? 'Драма' : 'Театр',
         venue: event.place.name,
-        ticket_link: event.ticket_url || 'https://ticket.ru',
-        official_site_link: event.site_url || 'https://kudago.com'
+        ticket_link: fixTicketLink(event.ticket_url, event.site_url),
+        official_site_link: fixOfficialSiteLink(event.site_url)
       }));
 
     res.json(events);
@@ -56,7 +56,22 @@ function formatDate(dateString) {
   });
 }
 
+function fixTicketLink(ticketUrl, siteUrl) {
+  if (!ticketUrl) return 'https://ticket.ru';
+  if (ticketUrl.includes('ticket.ru')) return ticketUrl;
+  if (ticketUrl.includes('kudago.com')) return 'https://ticket.ru';
+  return ticketUrl;
+}
+
+function fixOfficialSiteLink(siteUrl) {
+  if (!siteUrl) return 'https://kudago.com';
+  if (siteUrl.includes('kudago.com')) return 'https://kudago.com';
+  if (siteUrl.includes('bolshoi.ru')) return 'https://bolshoi.ru';
+  if (siteUrl.includes('mxt.ru')) return 'https://mxt.ru';
+  if (siteUrl.includes('marinsky.ru')) return 'https://marinsky.ru';
+  return siteUrl;
+}
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
-
