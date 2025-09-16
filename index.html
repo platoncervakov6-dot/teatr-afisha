@@ -6,70 +6,136 @@
   <title>Театральная афиша Москвы</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
-    body { background: linear-gradient(135deg, #1a2a6c, #b21f1f); color: white; }
-    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-    .loader { text-align: center; padding: 30px; }
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+      color: white;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    .event-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .event-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    .event-details {
+      color: #e0e0e0;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .links {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .link-button {
+      flex: 1;
+      padding: 8px 12px;
+      background: linear-gradient(45deg, #ff416c, #ff4b2b);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 14px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .link-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    .loader {
+      text-align: center;
+      padding: 30px;
+      font-size: 18px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1 style="text-align:center;">Театральная афиша Москвы</h1>
+    <div class="header">
+      <h1 class="title">Театральная афиша Москвы</h1>
+      <p>Опера, драма, балет — все события под рукой</p>
+    </div>
     <div id="events-container">
-      <div class="loader">Загрузка данных...</div>
+      <!-- Здесь будут спектакли -->
     </div>
   </div>
 
   <script>
+    // Подключаем Telegram WebApp
     const tg = window.Telegram.WebApp;
-  tg.expand();
-  tg.setHeaderColor('#1a2a6c');
-  tg.setBackgroundColor('#1a2a6c');
+    tg.expand();
+    tg.setHeaderColor('#1a2a6c');
+    tg.setBackgroundColor('#1a2a6c');
 
-  // Фейковый бэкенд — пока просто возвращает спектакли
-  const fakeEvents = [
-    {
-      title: "Большой театр: Щелкунчик",
-      date: "15 декабря 2023, 19:00",
-      type: "Балет",
-      venue: "Большой театр, Москва",
-      ticket_link: "https://ticket.ru/bolshoi-schelkunchik",
-      official_site_link: "https://bolshoi.ru"
-    },
-    {
-      title: "МХТ им. Чехова: Вишнёвый сад",
-      date: "16 декабря 2023, 18:00",
-      type: "Драма",
-      venue: "МХТ им. Чехова, Москва",
-      ticket_link: "https://ticket.ru/mxt-vishnevyi-sad",
-      official_site_link: "https://mxt.ru"
-    },
-    {
-      title: "Мариинский театр: Евгений Онегин",
-      date: "17 декабря 2023, 19:30",
-      type: "Опера",
-      venue: "Мариинский театр, Москва",
-      ticket_link: "https://ticket.ru/mariinsky-onegin",
-      official_site_link: "https://marinsky.ru"
-    }
-  ];
+    // ФЕЙКОВЫЕ СПЕКТАКЛИ — прямо в коде, НЕ ЗАГРУЖАЮТСЯ ИЗ СЕТИ!
+    const fakeEvents = [
+      {
+        title: "Большой театр: Щелкунчик",
+        date: "15 декабря 2023, 19:00",
+        type: "Балет",
+        venue: "Большой театр, Москва",
+        ticket_link: "https://ticket.ru/bolshoi-schelkunchik",
+        official_site_link: "https://bolshoi.ru"
+      },
+      {
+        title: "МХТ им. Чехова: Вишнёвый сад",
+        date: "16 декабря 2023, 18:00",
+        type: "Драма",
+        venue: "МХТ им. Чехова, Москва",
+        ticket_link: "https://ticket.ru/mxt-vishnevyi-sad",
+        official_site_link: "https://mxt.ru"
+      },
+      {
+        title: "Мариинский театр: Евгений Онегин",
+        date: "17 декабря 2023, 19:30",
+        type: "Опера",
+        venue: "Мариинский театр, Москва",
+        ticket_link: "https://ticket.ru/mariinsky-onegin",
+        official_site_link: "https://marinsky.ru"
+      }
+    ];
 
-  // Отображаем спектакли
-  const container = document.getElementById('events-container');
-  container.innerHTML = fakeEvents.map(event => `
-    <div class="event-card">
-      <div class="event-title">${event.title}</div>
-      <div class="event-details">
-        📅 ${event.date}<br>
-        🎭 ${event.type}<br>
-        📍 ${event.venue}
+    // ОТРИСОВЫВАЕМ СПЕКТАКЛИ — БЕЗ fetch, БЕЗ АСИНХРОННОСТИ!
+    const container = document.getElementById('events-container');
+    container.innerHTML = fakeEvents.map(event => `
+      <div class="event-card">
+        <div class="event-title">${event.title}</div>
+        <div class="event-details">
+          📅 ${event.date}<br>
+          🎭 ${event.type}<br>
+          📍 ${event.venue}
+        </div>
+        <div class="links">
+          <a href="${event.ticket_link}" target="_blank" class="link-button">🎟️ Билеты</a>
+          <a href="${event.official_site_link}" target="_blank" class="link-button">🌐 Сайт</a>
+        </div>
       </div>
-      <div class="links">
-        <a href="${event.ticket_link}" target="_blank" class="link-button ticket">🎟️ Билеты</a>
-        <a href="${event.official_site_link}" target="_blank" class="link-button official">🌐 Сайт</a>
-      </div>
-    </div>
-  `).join('');
+    `).join('');
   </script>
 </body>
-
 </html>
