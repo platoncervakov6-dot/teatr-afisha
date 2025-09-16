@@ -3,6 +3,13 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// ✅ ВКЛЮЧАЕМ CORS — разрешаем всем доменам обращаться к нашему API!
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
 app.get('/events', async (req, res) => {
   try {
     const response = await axios.get('https://kudago.com/public-api/v1.4/events/', {
@@ -45,3 +52,4 @@ app.get('/events', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
