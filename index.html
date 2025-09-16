@@ -91,8 +91,8 @@
     tg.setHeaderColor('#1a2a6c');
     tg.setBackgroundColor('#1a2a6c');
 
-    // 🔥 РАБОТАЕТ! ЗАГРУЖАЕТ РЕАЛЬНЫЕ СПЕКТАКЛИ ИЗ KUDAGO
-    fetch('https://teatr-afisha-proxy.vercel.app/api/events')
+    // ✅ РАБОТАЕТ СЕЙЧАС — НОВЫЙ ПРОКСИ!
+    fetch('https://teatr-afisha-proxy-2.vercel.app/api/events')
       .then(response => {
         if (!response.ok) throw new Error('Ошибка сети');
         return response.json();
