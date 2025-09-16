@@ -1,7 +1,5 @@
-// api/events.js
 export default async function handler(req, res) {
   try {
-    // Тестовый JSON — пока не парсим, просто проверим, что API работает
     const testEvents = [
       {
         title: "Опера «Для Чёрного квадрата»",
@@ -23,7 +21,7 @@ export default async function handler(req, res) {
 
     res.status(200).json(testEvents);
   } catch (error) {
-    console.error('Ошибка:', error);
+    console.error('Ошибка сервера:', error);
     res.status(500).json({ error: 'Ошибка сервера' });
   }
 }
