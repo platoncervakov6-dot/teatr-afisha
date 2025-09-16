@@ -67,11 +67,6 @@
       transform: translateY(-2px);
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
-    .loader {
-      text-align: center;
-      padding: 30px;
-      font-size: 18px;
-    }
   </style>
 </head>
 <body>
@@ -86,13 +81,12 @@
   </div>
 
   <script>
-    // Подключаем Telegram WebApp
     const tg = window.Telegram.WebApp;
     tg.expand();
     tg.setHeaderColor('#1a2a6c');
     tg.setBackgroundColor('#1a2a6c');
 
-    // ФЕЙКОВЫЕ СПЕКТАКЛИ — прямо в коде, НЕ ЗАГРУЖАЮТСЯ ИЗ СЕТИ!
+    // 💥 ФЕЙКОВЫЕ СПЕКТАКЛИ — БЕЗ fetch, БЕЗ АСИНХРОННОСТИ!
     const fakeEvents = [
       {
         title: "Большой театр: Щелкунчик",
@@ -120,7 +114,7 @@
       }
     ];
 
-    // ОТРИСОВЫВАЕМ СПЕКТАКЛИ — БЕЗ fetch, БЕЗ АСИНХРОННОСТИ!
+    // 💥 ОТРИСОВКА — СРАЗУ, БЕЗ ЗАГРУЗКИ!
     const container = document.getElementById('events-container');
     container.innerHTML = fakeEvents.map(event => `
       <div class="event-card">
