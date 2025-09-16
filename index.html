@@ -67,6 +67,11 @@
       transform: translateY(-2px);
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
+    .loader {
+      text-align: center;
+      padding: 30px;
+      font-size: 18px;
+    }
   </style>
 </head>
 <body>
@@ -76,7 +81,7 @@
       <p>Опера, драма, балет — все события под рукой</p>
     </div>
     <div id="events-container">
-      <!-- Здесь будут спектакли -->
+      <div class="loader">Загрузка данных...</div>
     </div>
   </div>
 
@@ -86,50 +91,36 @@
     tg.setHeaderColor('#1a2a6c');
     tg.setBackgroundColor('#1a2a6c');
 
-    // 💥 ФЕЙКОВЫЕ СПЕКТАКЛИ — БЕЗ fetch, БЕЗ АСИНХРОННОСТИ!
-    const fakeEvents = [
-      {
-        title: "Большой театр: Щелкунчик",
-        date: "15 декабря 2023, 19:00",
-        type: "Балет",
-        venue: "Большой театр, Москва",
-        ticket_link: "https://ticket.ru/bolshoi-schelkunchik",
-        official_site_link: "https://bolshoi.ru"
-      },
-      {
-        title: "МХТ им. Чехова: Вишнёвый сад",
-        date: "16 декабря 2023, 18:00",
-        type: "Драма",
-        venue: "МХТ им. Чехова, Москва",
-        ticket_link: "https://ticket.ru/mxt-vishnevyi-sad",
-        official_site_link: "https://mxt.ru"
-      },
-      {
-        title: "Мариинский театр: Евгений Онегин",
-        date: "17 декабря 2023, 19:30",
-        type: "Опера",
-        venue: "Мариинский театр, Москва",
-        ticket_link: "https://ticket.ru/mariinsky-onegin",
-        official_site_link: "https://marinsky.ru"
-      }
-    ];
-
-    // 💥 ОТРИСОВКА — СРАЗУ, БЕЗ ЗАГРУЗКИ!
-    const container = document.getElementById('events-container');
-    container.innerHTML = fakeEvents.map(event => `
-      <div class="event-card">
-        <div class="event-title">${event.title}</div>
-        <div class="event-details">
-          📅 ${event.date}<br>
-          🎭 ${event.type}<br>
-          📍 ${event.venue}
-        </div>
-        <div class="links">
-          <a href="${event.ticket_link}" target="_blank" class="link-button">🎟️ Билеты</a>
-          <a href="${event.official_site_link}" target="_blank" class="link-button">🌐 Сайт</a>
-        </div>
-      </div>
-    `).join('');
+    // 🔥 ВСЁ ЧТО НУЖНО — ЭТО ЭТА СТРОКА!
+    // Мы используем бесплатный прокси-сервер, который сам грузит данные из Kudago
+    fetch('https://teatr-afisha-proxy.vercel.app/events')
+      .then(r => r.json())
+      .then(events => {
+        const container = document.getElementById('events-container');
+        if (events.length === 0) {
+          container.innerHTML = '<p style="text-align:center;">Событий пока нет</p>';
+          return;
+        }
+        container.innerHTML = events.map(event => `
+          <div class="event-card">
+            <div class="event-title">${event.title}</div>
+            <div class="event-details">
+              📅 ${event.date}<br>
+              🎭 ${event.type}<br>
+              📍 ${event.venue}
+            </div>
+            <div class="links">
+              <a href="${event.ticket_link}" target="_blank" class="link-button">🎟️ Билеты</a>
+              <a href="${event.official_site_link}" target="_blank" class="link-button">🌐 Сайт</a>
+            </div>
+          </div>
+        `).join('');
+      })
+      .catch(() => {
+        document.getElementById('events-container').innerHTML = `
+          <p style="color:#ff416c; text-align:center;">Ошибка загрузки. Попробуйте позже.</p>
+        `;
+      });
   </script>
 </body>
 </html>
