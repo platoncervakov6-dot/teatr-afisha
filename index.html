@@ -1,129 +1,80 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Театральная афиша Москвы</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>МосАфиша</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f1e;
+      color: #e0e0ff;
       margin: 0;
-      padding: 20px;
-      background: linear-gradient(135deg, #1a2a6c, #b21f1f);
-      color: white;
+      padding: 16px;
+      line-height: 1.6;
     }
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    .header {
+    h1 {
       text-align: center;
       margin-bottom: 20px;
+      color: #fff;
+    }
+    .event {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      border-left: 4px solid #ff4d4d;
     }
     .title {
-      font-size: 24px;
-      font-weight: bold;
-      color: #fff;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      font-size: 1.1rem;
+      margin: 0 0 8px 0;
+      word-break: break-word;
     }
-    .event-card {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 15px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    .info {
+      font-size: 0.9rem;
+      color: #ccc;
+      margin: 4px 0;
     }
-    .event-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 8px;
-      color: #fff;
-    }
-    .event-details {
-      color: #e0e0e0;
-      font-size: 14px;
-      line-height: 1.4;
-    }
-    .links {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-    }
-    .link-button {
-      flex: 1;
-      padding: 8px 12px;
-      background: linear-gradient(45deg, #ff416c, #ff4b2b);
-      color: white;
+    .btn {
+      display: inline-block;
+      padding: 10px 16px;
+      margin: 8px 8px 0 0;
       text-decoration: none;
       border-radius: 8px;
-      font-size: 14px;
+      font-weight: bold;
+      color: white;
       text-align: center;
-      transition: all 0.3s;
+      width: calc(50% - 8px);
+      box-sizing: border-box;
     }
-    .link-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    .btn-tickets {
+      background: #ff4d4d;
+      float: left;
     }
-    .loader {
+    .btn-site {
+      background: #ff7b7b;
+      float: right;
+    }
+    .loading {
       text-align: center;
-      padding: 30px;
-      font-size: 18px;
+      padding: 40px;
+      color: #aaa;
+    }
+    .no-events {
+      text-align: center;
+      padding: 40px;
+      color: #888;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1 class="title">Театральная афиша Москвы</h1>
-      <p>Опера, драма, балет — все события под рукой</p>
-    </div>
-    <div id="events-container">
-      <div class="loader">Загрузка данных...</div>
-    </div>
-  </div>
+  <h1>🎭 Афиша театров Москвы</h1>
+  <p>Будущие спектакли — от завтрашнего дня</p>
 
-  <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
-    tg.setHeaderColor('#1a2a6c');
-    tg.setBackgroundColor('#1a2a6c');
+  <div id="events">Загрузка...</div>
 
-    // ✅ РАБОТАЕТ СЕЙЧАС — ТВОЙ ВЕРЦЕЛ-СЕРВЕР!
-    fetch('https://teatr-afisha.vercel.app/events')
-      .then(response => {
-        if (!response.ok) throw new Error('Ошибка сети: ' + response.status);
-        return response.json();
-      })
-      .then(events => {
-        const container = document.getElementById('events-container');
-        if (events.length === 0) {
-          container.innerHTML = '<p style="text-align:center;">Событий пока нет</p>';
-          return;
-        }
-        container.innerHTML = events.map(event => `
-          <div class="event-card">
-            <div class="event-title">${event.title}</div>
-            <div class="event-details">
-              📅 ${event.date}<br>
-              🎭 ${event.type}<br>
-              📍 ${event.venue}
-            </div>
-            <div class="links">
-              <a href="${event.ticket_link}" target="_blank" class="link-button">🎟️ Билеты</a>
-              <a href="${event.official_site_link}" target="_blank" class="link-button">🌐 Сайт</a>
-            </div>
-          </div>
-        `).join('');
-      })
-      .catch(error => {
-        console.error('Ошибка:', error);
-        document.getElementById('events-container').innerHTML = `
-          <p style="color:#ff416c; text-align:center;">Ошибка загрузки. Попробуйте позже.</p>
-        `;
-      });
-  </script>
+  <script src="index.js"></script>
 </body>
 </html>
