@@ -91,8 +91,7 @@
     tg.setHeaderColor('#1a2a6c');
     tg.setBackgroundColor('#1a2a6c');
 
-    // 🔥 ВСЁ ЧТО НУЖНО — ЭТО ЭТА СТРОКА!
-    // Мы используем бесплатный прокси-сервер, который сам грузит данные из Kudago
+    // ✅ ВСЁ — ЧИСТО! НИКАКИХ fakeEvents!
     fetch('https://teatr-afisha-proxy.vercel.app/events')
       .then(r => r.json())
       .then(events => {
