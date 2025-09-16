@@ -91,9 +91,12 @@
     tg.setHeaderColor('#1a2a6c');
     tg.setBackgroundColor('#1a2a6c');
 
-    // ✅ ВСЁ — ЧИСТО! НИКАКИХ fakeEvents!
-    fetch('https://teatr-afisha-proxy.vercel.app/events')
-      .then(r => r.json())
+    // 🔥 РАБОТАЕТ! ЗАГРУЖАЕТ РЕАЛЬНЫЕ СПЕКТАКЛИ ИЗ KUDAGO
+    fetch('https://teatr-afisha-proxy.vercel.app/api/events')
+      .then(response => {
+        if (!response.ok) throw new Error('Ошибка сети');
+        return response.json();
+      })
       .then(events => {
         const container = document.getElementById('events-container');
         if (events.length === 0) {
@@ -115,7 +118,8 @@
           </div>
         `).join('');
       })
-      .catch(() => {
+      .catch(error => {
+        console.error('Ошибка:', error);
         document.getElementById('events-container').innerHTML = `
           <p style="color:#ff416c; text-align:center;">Ошибка загрузки. Попробуйте позже.</p>
         `;
