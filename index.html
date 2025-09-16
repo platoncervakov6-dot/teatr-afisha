@@ -91,10 +91,10 @@
     tg.setHeaderColor('#1a2a6c');
     tg.setBackgroundColor('#1a2a6c');
 
-    // ✅ РАБОТАЕТ СЕЙЧАС — НОВЫЙ ПРОКСИ!
+    // ✅ РАБОТАЕТ СЕЙЧАС — ПОДКЛЮЧЕН К ТВОЕМУ ВЕРЦЕЛ-СЕРВЕРУ!
     fetch('https://teatr-afisha.vercel.app/events')
       .then(response => {
-        if (!response.ok) throw new Error('Ошибка сети');
+        if (!response.ok) throw new Error('Ошибка сети: ' + response.status);
         return response.json();
       })
       .then(events => {
