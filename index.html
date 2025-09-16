@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Театральная афиша Москвы</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body { background: linear-gradient(135deg, #1a2a6c, #b21f1f); color: white; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .loader { text-align: center; padding: 30px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 style="text-align:center;">Театральная афиша Москвы</h1>
+    <div id="events-container">
+      <div class="loader">Загрузка данных...</div>
+    </div>
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    fetch('https://your-backend-url.com/events')
+      .then(r => r.json())
+      .then(data => {
+        document.getElementById('events-container').innerHTML = 
+          data.map(e => `
+            <div style="background:#fff1; padding:15px; margin:10px 0; border-radius:10px;">
+              <strong>${e.title}</strong><br>
+              ${e.date} • ${e.type}<br>
+              <a href="${e.ticket_link}" target="_blank" style="color:#2ecc71;">🎟️ Билеты</a> |
+              <a href="${e.official_site_link}" target="_blank" style="color:#3498db;">🌐 Сайт</a>
+            </div>
+          `).join('');
+      });
+  </script>
+</body>
+</html>
