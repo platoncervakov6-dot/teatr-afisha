@@ -1,13 +1,13 @@
 {
   "name": "moscow-theater-afisha",
   "version": "1.0.0",
+  "type": "module",
+  "main": "index.html",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
-  "type": "module",
-  "main": "index.html",
   "keywords": ["telegram", "miniapp", "theater", "moscow"],
   "author": "Твой ник",
   "license": "MIT",
