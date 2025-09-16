@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     const response = await fetch('/api/events');
     if (!response.ok) {
-      throw new Error('Ошибка сети');
+      throw new Error(`Ошибка сети: ${response.status}`);
     }
 
     const events = await response.json();
