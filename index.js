@@ -28,12 +28,7 @@ app.get('/events', async (req, res) => {
       })
       .map(event => ({
         title: event.title,
-        date: new Date(event.dates[0].start_date).toLocaleDateString('ru-RU', {
-          day: 'numeric',
-          month: 'long',
-          hour: '2-digit',
-          minute: '2-digit'
-        }),
+        date: formatDate(event.dates[0]?.start_date),
         type: event.title.toLowerCase().includes('опера') ? 'Опера' :
               event.title.toLowerCase().includes('балет') ? 'Балет' :
               event.title.toLowerCase().includes('драма') || event.title.toLowerCase().includes('пьеса') ? 'Драма' : 'Театр',
@@ -48,6 +43,18 @@ app.get('/events', async (req, res) => {
     res.status(500).json({ error: 'Не удалось загрузить данные' });
   }
 });
+
+function formatDate(dateString) {
+  if (!dateString) return 'Дата не указана';
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return 'Дата не указана';
+  return date.toLocaleDateString('ru-RU', {
+    day: 'numeric',
+    month: 'long',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
