@@ -21,20 +21,55 @@
 
   <script>
     const tg = window.Telegram.WebApp;
-    tg.expand();
-    fetch('https://your-backend-url.com/events')
-      .then(r => r.json())
-      .then(data => {
-        document.getElementById('events-container').innerHTML = 
-          data.map(e => `
-            <div style="background:#fff1; padding:15px; margin:10px 0; border-radius:10px;">
-              <strong>${e.title}</strong><br>
-              ${e.date} • ${e.type}<br>
-              <a href="${e.ticket_link}" target="_blank" style="color:#2ecc71;">🎟️ Билеты</a> |
-              <a href="${e.official_site_link}" target="_blank" style="color:#3498db;">🌐 Сайт</a>
-            </div>
-          `).join('');
-      });
+  tg.expand();
+  tg.setHeaderColor('#1a2a6c');
+  tg.setBackgroundColor('#1a2a6c');
+
+  // Фейковый бэкенд — пока просто возвращает спектакли
+  const fakeEvents = [
+    {
+      title: "Большой театр: Щелкунчик",
+      date: "15 декабря 2023, 19:00",
+      type: "Балет",
+      venue: "Большой театр, Москва",
+      ticket_link: "https://ticket.ru/bolshoi-schelkunchik",
+      official_site_link: "https://bolshoi.ru"
+    },
+    {
+      title: "МХТ им. Чехова: Вишнёвый сад",
+      date: "16 декабря 2023, 18:00",
+      type: "Драма",
+      venue: "МХТ им. Чехова, Москва",
+      ticket_link: "https://ticket.ru/mxt-vishnevyi-sad",
+      official_site_link: "https://mxt.ru"
+    },
+    {
+      title: "Мариинский театр: Евгений Онегин",
+      date: "17 декабря 2023, 19:30",
+      type: "Опера",
+      venue: "Мариинский театр, Москва",
+      ticket_link: "https://ticket.ru/mariinsky-onegin",
+      official_site_link: "https://marinsky.ru"
+    }
+  ];
+
+  // Отображаем спектакли
+  const container = document.getElementById('events-container');
+  container.innerHTML = fakeEvents.map(event => `
+    <div class="event-card">
+      <div class="event-title">${event.title}</div>
+      <div class="event-details">
+        📅 ${event.date}<br>
+        🎭 ${event.type}<br>
+        📍 ${event.venue}
+      </div>
+      <div class="links">
+        <a href="${event.ticket_link}" target="_blank" class="link-button ticket">🎟️ Билеты</a>
+        <a href="${event.official_site_link}" target="_blank" class="link-button official">🌐 Сайт</a>
+      </div>
+    </div>
+  `).join('');
   </script>
 </body>
+
 </html>
