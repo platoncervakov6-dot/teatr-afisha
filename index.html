@@ -92,7 +92,7 @@
     tg.setBackgroundColor('#1a2a6c');
 
     // ✅ РАБОТАЕТ СЕЙЧАС — НОВЫЙ ПРОКСИ!
-    fetch('https://teatr-afisha-proxy-2.vercel.app/api/events')
+    fetch('https://teatr-afisha.vercel.app/events')
       .then(response => {
         if (!response.ok) throw new Error('Ошибка сети');
         return response.json();
@@ -127,3 +127,4 @@
   </script>
 </body>
 </html>
+
