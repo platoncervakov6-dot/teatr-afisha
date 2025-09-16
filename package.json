@@ -1,12 +1,20 @@
 {
-  "name": "teatr-afisha-proxy",
+  "name": "moscow-theater-afisha",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
+  "type": "module",
+  "main": "index.html",
+  "keywords": ["telegram", "miniapp", "theater", "moscow"],
+  "author": "Твой ник",
+  "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
-    "axios": "^1.7.2"
+    "undici": "^6.10.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
   }
 }
